@@ -1,0 +1,190 @@
+Upgrade the EXISTING “Couple Apocalypse” game. Do not rebuild the project from scratch and do not remove any of the current working gameplay or visual identity.
+
+The current game already has:
+- A start screen
+- Mobile-first game area
+- Player movement
+- Left/right mobile controls
+- Couples as falling/moving obstacles
+- Collision detection
+- Survival timer/score
+- Game-over/restart flow
+- The current dark, pink, playful Gen-Z visual style
+
+Keep all of those working.
+
+I want this upgrade to focus ONLY on four things:
+1. Different types of couples
+2. Random game events
+3. Progressive difficulty
+4. High score
+
+Do NOT add authentication, Supabase, a database, AI, multiplayer, payments, accounts, leaderboards, or unrelated features.
+
+━━━━━━━━━━━━━━━━━━━━
+1. DIFFERENT TYPES OF COUPLES
+━━━━━━━━━━━━━━━━━━━━
+
+Replace the current single generic obstacle type with several visually distinct couple types that behave differently.
+
+Create these three:
+
+NORMAL COUPLE 💑
+- Standard obstacle.
+- Moves downward at the normal speed.
+- This is the most common obstacle.
+
+PDA COUPLE 💋
+- Visually different from the normal couple.
+- Moves faster than a normal couple.
+- Should create a stronger sense of danger.
+
+PROPOSING COUPLE 💍
+- Visually different and clearly recognizable.
+- Moves in a less predictable pattern or slightly changes horizontal position while moving downward.
+- Should be harder to avoid than a normal couple.
+
+Make sure the different types are actually recognizable during gameplay and not just different labels.
+
+Use lightweight visuals such as emojis, CSS shapes, or existing visual techniques rather than requiring external image assets.
+
+━━━━━━━━━━━━━━━━━━━━
+2. RANDOM EVENTS
+━━━━━━━━━━━━━━━━━━━━
+
+Add random events during gameplay.
+
+Events should appear as short, visually noticeable announcements near the top of the game area and temporarily change the gameplay.
+
+Create these events:
+
+EVENT: “PDA DETECTED 💋”
+- For a short period, more PDA couples spawn.
+- PDA couples become slightly more frequent.
+
+EVENT: “WEDDING SEASON 💍”
+- For a short period, proposing couples become more frequent.
+- The game should feel noticeably more difficult during this event.
+
+The event system should:
+- Trigger randomly after the game has started.
+- Not trigger constantly.
+- Display the event name clearly for a few seconds.
+- Temporarily affect obstacle spawning.
+- Then return to normal gameplay.
+
+Do not allow multiple events to overlap.
+
+━━━━━━━━━━━━━━━━━━━━
+3. PROGRESSIVE DIFFICULTY
+━━━━━━━━━━━━━━━━━━━━
+
+Make the game become progressively harder as the player survives.
+
+Use survival time as the progression system.
+
+EARLY GAME:
+- Normal obstacle speed and spawn frequency.
+- Mostly normal couples.
+
+MID GAME:
+- Increase obstacle movement speed slightly.
+- Increase spawn frequency.
+- Introduce more PDA couples.
+
+LATER GAME:
+- Increase movement speed further.
+- Increase spawn frequency again.
+- Increase the appearance rate of proposing couples.
+- Events can occur more frequently.
+
+The difficulty should increase gradually rather than becoming impossible suddenly.
+
+The player should feel:
+“Okay, this is getting harder.”
+not:
+“This is impossible.”
+
+Keep the game playable on a phone.
+
+━━━━━━━━━━━━━━━━━━━━
+4. HIGH SCORE
+━━━━━━━━━━━━━━━━━━━━
+
+Add a local high-score system.
+
+The game should remember the player's best survival time on their device/browser.
+
+During the game, show:
+CURRENT: [current survival time]
+BEST: [best survival time]
+
+On game over, show:
+- Current survival time
+- Best survival time
+
+If the player beats their previous record, display something fun like:
+
+“NEW SINGLE RECORD 🏆”
+
+The high score should persist when the page is refreshed.
+
+Use browser-local storage for this. Do NOT create a database or use Supabase.
+
+━━━━━━━━━━━━━━━━━━━━
+GAME BALANCE
+━━━━━━━━━━━━━━━━━━━━
+
+Keep the existing three-state flow:
+
+START → PLAYING → GAME OVER
+
+The core objective remains:
+
+SURVIVE AS LONG AS POSSIBLE WITHOUT GETTING CAUGHT BY A COUPLE.
+
+Do not add hearts, power-ups, characters, levels, shops, coins, multiplayer, leaderboards, login, sound systems, or other features yet.
+
+━━━━━━━━━━━━━━━━━━━━
+DESIGN
+━━━━━━━━━━━━━━━━━━━━
+
+Keep the existing visual style because I like it.
+
+Do not completely redesign the interface.
+
+Improve the visual feedback for:
+- Different couple types
+- Event announcements
+- Increasing difficulty
+- High score
+- New record
+
+Keep it polished, mobile-first, responsive, and easy to understand without instructions.
+
+The game should still feel like a fun, slightly chaotic Gen-Z internet game.
+
+━━━━━━━━━━━━━━━━━━━━
+IMPORTANT
+━━━━━━━━━━━━━━━━━━━━
+
+Modify the existing working code instead of replacing the project with a completely different implementation.
+
+Preserve all existing functionality that already works.
+
+Prioritize gameplay stability over decorative additions.
+
+After making the changes, make sure:
+- The game starts correctly.
+- Player movement still works with both mobile buttons and keyboard arrows.
+- Couples spawn correctly.
+- All three couple types behave differently.
+- Events trigger correctly.
+- Difficulty increases gradually.
+- Collision still works for every couple type.
+- Game over still works.
+- Restart works.
+- High score persists after refreshing the browser.
+- The game remains playable on a mobile screen.
+
+Do not stop at a visual mockup. The result must be a fully playable game.

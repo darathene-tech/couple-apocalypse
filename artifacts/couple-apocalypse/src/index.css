@@ -116,8 +116,9 @@ button:focus-visible { outline: 3px solid #8ae0dc; outline-offset: 4px; }
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 10px;
   min-height: 47px;
-  padding: 0 15px;
+  padding: 0 12px;
   border: 1px solid rgba(231, 226, 218, .13);
   border-radius: 13px;
   background: rgba(31, 33, 44, .9);
@@ -126,17 +127,19 @@ button:focus-visible { outline: 3px solid #8ae0dc; outline-offset: 4px; }
 .score-label {
   display: flex;
   align-items: baseline;
-  gap: 8px;
+  gap: 5px;
   color: #a8a7b0;
   font: 10px var(--app-font-mono);
   letter-spacing: .08em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 .score-value {
   color: #f5eddf;
   font: 700 22px/1 var(--app-font-display);
   font-variant-numeric: tabular-nums;
 }
+.best-score-label .score-value { color: #8edbd2; }
 .single-badge {
   display: inline-flex;
   align-items: center;
@@ -144,6 +147,7 @@ button:focus-visible { outline: 3px solid #8ae0dc; outline-offset: 4px; }
   color: #91ded4;
   font: 500 9px var(--app-font-mono);
   letter-spacing: .08em;
+  white-space: nowrap;
 }
 .single-badge::before {
   content: '';
@@ -152,6 +156,31 @@ button:focus-visible { outline: 3px solid #8ae0dc; outline-offset: 4px; }
   border-radius: 50%;
   background: #8bdfd5;
   box-shadow: 0 0 10px rgba(139,223,213,.65);
+}
+.threat-meter {
+  display: grid;
+  grid-template-columns: auto minmax(40px, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 19px;
+  padding: 0 4px;
+  color: #aaa7b0;
+  font: 8px var(--app-font-mono);
+  letter-spacing: .11em;
+}
+.threat-meter > span:last-child { color: #f08ca2; }
+.threat-track {
+  height: 4px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgba(235, 227, 219, .12);
+}
+.threat-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #8edbd2, #f28b9d 75%, #f3bf68);
+  box-shadow: 0 0 10px rgba(240, 128, 145, .45);
+  transition: width .3s ease;
 }
 .arena {
   position: relative;
@@ -209,6 +238,55 @@ button:focus-visible { outline: 3px solid #8ae0dc; outline-offset: 4px; }
   text-align: center;
   text-transform: uppercase;
 }
+.arena.has-event .arena-hint { opacity: .13; }
+.event-announcement {
+  position: absolute;
+  z-index: 3;
+  top: 38px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: max-content;
+  max-width: calc(100% - 24px);
+  min-height: 39px;
+  padding: 0 11px;
+  border: 1px solid rgba(255, 136, 172, .65);
+  border-radius: 11px;
+  color: #fff2f4;
+  background: linear-gradient(100deg, rgba(111, 36, 75, .97), rgba(53, 32, 56, .97));
+  box-shadow: 0 6px 22px rgba(0,0,0,.3), 0 0 19px rgba(255, 89, 145, .18);
+  font: 800 13px var(--app-font-display);
+  letter-spacing: .06em;
+  transform: translateX(-50%);
+  animation: event-in .25s cubic-bezier(.2,.8,.2,1) both;
+  white-space: nowrap;
+}
+.event-announcement--wedding {
+  border-color: rgba(255, 213, 126, .75);
+  color: #fff0c9;
+  background: linear-gradient(100deg, rgba(103, 76, 39, .97), rgba(54, 42, 44, .97));
+  box-shadow: 0 6px 22px rgba(0,0,0,.3), 0 0 20px rgba(255, 201, 92, .18);
+}
+.event-mark {
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  border-radius: 50%;
+  color: #2d1924;
+  background: #ffa4bd;
+  font: 900 12px var(--app-font-mono);
+}
+.event-announcement--wedding .event-mark { color: #3a2b19; background: #ffd778; }
+.event-duration {
+  color: rgba(255, 231, 235, .7);
+  font: 7px var(--app-font-mono);
+  letter-spacing: .08em;
+}
+.event-announcement--wedding .event-duration { color: rgba(255, 239, 196, .72); }
 .hazard {
   position: absolute;
   display: flex;
@@ -232,6 +310,46 @@ button:focus-visible { outline: 3px solid #8ae0dc; outline-offset: 4px; }
   font-size: 15px;
   transform: rotate(12deg);
 }
+.hazard-caption {
+  position: absolute;
+  z-index: 1;
+  top: -9px;
+  left: 50%;
+  padding: 2px 5px 1px;
+  border: 1px solid rgba(255, 169, 185, .38);
+  border-radius: 5px;
+  color: #f7d8dd;
+  background: #382833;
+  font: 7px var(--app-font-mono);
+  letter-spacing: .07em;
+  line-height: 1;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.hazard--pda {
+  border-color: rgba(255, 116, 163, .9);
+  background: linear-gradient(145deg, rgba(150, 43, 91, .98), rgba(84, 34, 69, .98));
+  box-shadow: 0 0 19px rgba(255, 77, 143, .4), 0 7px 15px rgba(0,0,0,.24), inset 0 1px rgba(255,255,255,.2);
+}
+.hazard--pda::after { content: '‼'; color: #ff7ba7; font-weight: 900; }
+.hazard--pda .hazard-caption {
+  border-color: rgba(255, 133, 174, .72);
+  color: #fff0f5;
+  background: #722c52;
+}
+.hazard--pda .hazard-emoji { animation: pda-buzz .2s ease-in-out infinite alternate; }
+.hazard--proposing {
+  border-color: rgba(255, 213, 126, .85);
+  background: linear-gradient(145deg, rgba(116, 82, 45, .98), rgba(70, 55, 48, .98));
+  box-shadow: 0 0 16px rgba(255, 205, 111, .25), 0 7px 15px rgba(0,0,0,.24), inset 0 1px rgba(255,255,255,.19);
+}
+.hazard--proposing::after { content: '✦'; color: #ffd778; }
+.hazard--proposing .hazard-caption {
+  border-color: rgba(255, 213, 126, .68);
+  color: #fff0c7;
+  background: #594630;
+}
+.hazard--proposing .hazard-emoji { animation: ring-flash .8s ease-in-out infinite alternate; }
 .hazard-emoji {
   font-size: 28px;
   line-height: 1;
@@ -410,15 +528,28 @@ button:focus-visible { outline: 3px solid #8ae0dc; outline-offset: 4px; }
   color: #e2dad6;
   font-size: 14px;
 }
-.final-score {
+.final-scores {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  width: min(100%, 310px);
   margin: 0 auto 20px;
+}
+.final-score {
+  min-width: 0;
+  margin: 0;
   padding: 10px 14px 9px;
-  width: fit-content;
-  min-width: 145px;
+  width: 100%;
+  min-height: 64px;
   border: 1px solid rgba(240, 139, 157, .27);
   border-radius: 12px;
   background: rgba(207, 100, 123, .1);
 }
+.final-score--best {
+  border-color: rgba(142, 219, 210, .3);
+  background: rgba(95, 177, 170, .1);
+}
+.final-score--best strong { color: #b8f1e9; }
 .final-score span {
   display: block;
   color: #aaa5b0;
@@ -432,6 +563,19 @@ button:focus-visible { outline: 3px solid #8ae0dc; outline-offset: 4px; }
   color: #fff0e3;
   font: 700 30px/.95 var(--app-font-display);
   font-variant-numeric: tabular-nums;
+}
+.new-record {
+  width: fit-content;
+  margin: -2px auto 12px;
+  padding: 6px 12px;
+  border: 1px solid rgba(255, 216, 120, .55);
+  border-radius: 999px;
+  color: #ffe49a;
+  background: rgba(176, 123, 37, .18);
+  box-shadow: 0 0 18px rgba(255, 202, 92, .15);
+  font: 800 13px var(--app-font-display);
+  letter-spacing: .08em;
+  animation: record-pop .42s cubic-bezier(.2,.8,.2,1) both;
 }
 .game-controls {
   display: grid;
@@ -501,6 +645,10 @@ button:focus-visible { outline: 3px solid #8ae0dc; outline-offset: 4px; }
 @keyframes bob { from { transform: translate(-50%, 0); } to { transform: translate(-50%, -3px); } }
 @keyframes shake { 10%,90% { transform: translateX(-2px); } 20%,80% { transform: translateX(4px); } 30%,50%,70% { transform: translateX(-6px); } 40%,60% { transform: translateX(6px); } }
 @keyframes flash { from { opacity: .9; } to { opacity: 0; } }
+@keyframes pda-buzz { from { transform: rotate(-7deg) scale(.96); } to { transform: rotate(7deg) scale(1.06); } }
+@keyframes ring-flash { from { transform: scale(.95); } to { transform: scale(1.1); } }
+@keyframes event-in { from { opacity: 0; translate: 0 -6px; } to { opacity: 1; translate: 0 0; } }
+@keyframes record-pop { from { opacity: 0; transform: scale(.84); } to { opacity: 1; transform: scale(1); } }
 
 @media (min-width: 700px) {
   .game-page { align-items: center; padding-block: 20px; }
@@ -517,6 +665,12 @@ button:focus-visible { outline: 3px solid #8ae0dc; outline-offset: 4px; }
   .game-page { padding-inline: 11px; }
   .arena { min-height: 360px; height: 51dvh; }
   .intro-card, .end-card { padding-inline: 17px; }
+  .scorebar { gap: 6px; padding-inline: 9px; }
+  .score-label { gap: 4px; font-size: 8px; }
+  .score-value { font-size: 20px; }
+  .single-badge { gap: 4px; font-size: 8px; }
+  .final-score { padding-inline: 7px; }
+  .final-score span { font-size: 8px; }
 }
 @media (max-height: 700px) and (max-width: 699px) {
   .game-shell { gap: 8px; }
