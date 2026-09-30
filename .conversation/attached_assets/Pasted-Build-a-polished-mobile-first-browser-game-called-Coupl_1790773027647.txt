@@ -1,0 +1,82 @@
+Build a polished, mobile-first browser game called “Couple Apocalypse” using Next.js.
+
+CONCEPT:
+The world has been taken over by couples, and the player is a single person trying to survive for as long as possible without getting caught by them.
+
+The game should feel like a funny, chaotic Gen-Z mobile game, not a generic website or quiz.
+
+CORE GAMEPLAY:
+- Start with a simple title/start screen.
+- Title: “COUPLE APOCALYPSE 💔”
+- Subtitle: “The world is full of couples. Stay single.”
+- Include a clear “STAY SINGLE” start button.
+- Once the game starts, show a game area designed primarily for a phone screen.
+- The player is a cute single-person character positioned near the bottom of the game area.
+- Couples appear from the top and move downward toward the player.
+- The player can move left and right to avoid them.
+- On mobile, provide large, easy-to-tap LEFT and RIGHT controls at the bottom.
+- The player should also be able to use keyboard arrow keys when viewed on a computer.
+- The game should continuously increase the survival score based on how long the player survives.
+- Gradually increase the speed of the couples so the game becomes harder over time.
+- If a couple collides with the player, the game ends.
+- Show a funny game-over screen with the player's survival time/score.
+- Include a “TRY AGAIN” button that immediately restarts the game.
+
+GAME FEEL:
+Make the game playful, chaotic and slightly sarcastic.
+Use relationship-themed visual details and funny text, but keep the actual gameplay simple and responsive.
+Use smooth movement and simple animations.
+Do not make it look childish.
+Aim for a stylish Gen-Z internet aesthetic.
+
+VISUAL DIRECTION:
+- Mobile-first portrait layout.
+- Dark, dramatic background with playful relationship-themed accents.
+- Strong typography.
+- Clean modern UI.
+- Use emojis/simple CSS shapes or lightweight generated visual elements for the player and couples rather than requiring external image assets.
+- Add subtle animations and visual feedback.
+- Make the game feel polished enough that someone would want to screen-record themselves playing it.
+- Make sure text and controls are readable on a small phone screen.
+
+GAME STATES:
+The game should have these clear states:
+1. Start screen
+2. Playing
+3. Game over
+
+During gameplay display:
+- Current score/survival time
+- A small “STAY SINGLE” themed indicator or status
+
+GAME OVER:
+Use funny copy such as:
+“YOU GOT A PARTNER. 💀”
+“Your single era has ended.”
+Then show the final score and a “TRY AGAIN” button.
+
+IMPORTANT TECHNICAL CONSTRAINTS:
+- Build this as a simple Next.js web application.
+- Keep the architecture simple and beginner-friendly.
+- Do NOT add authentication.
+- Do NOT add Supabase.
+- Do NOT add a database.
+- Do NOT add AI.
+- Do NOT add payments.
+- Do NOT add multiplayer.
+- Do NOT add accounts or profiles.
+- Do NOT add a leaderboard.
+- Do NOT add unnecessary pages.
+- Do NOT add features that are not required for the core game.
+- Do not require external APIs.
+- Keep the game fully playable in the browser.
+- Make sure the game works properly on mobile Safari and common mobile browsers.
+- Make the layout responsive so it also works on desktop.
+- Keep the code organized and understandable for a beginner learning vibe coding.
+
+MOST IMPORTANT:
+Prioritize a fully playable game over extra features.
+The first version should be small but feel complete:
+START → PLAY → DODGE COUPLES → SURVIVE → COLLIDE → GAME OVER → TRY AGAIN.
+
+Do not build future features such as power-ups, different levels, bosses, Nigerian aunties, sound effects, skins, multiplayer or leaderboards yet. We will add those only after the basic game works.

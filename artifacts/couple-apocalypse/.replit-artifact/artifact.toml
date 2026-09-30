@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Couple Apocalypse"
+description = "A playful mobile-first browser game where a single survivor dodges descending couples for as long as possible. Move with touch controls or keyboard arrows, watch the pace increase, and restart after a collision."
+version = "1.0.0"
+id = "artifacts/couple-apocalypse"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 26177
+
+[services.development]
+run = "pnpm --filter @workspace/couple-apocalypse run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/couple-apocalypse", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/couple-apocalypse/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "26177"
+BASE_PATH = "/"
