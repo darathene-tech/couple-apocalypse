@@ -1,0 +1,84 @@
+Upgrade the existing Couple Apocalypse game with TWO additions: randomized game-over text messages and lightweight sound effects.
+
+IMPORTANT:
+Do not rebuild the game.
+Do not change the existing game mechanics, visuals, difficulty, controls, scoring, events, layout, or overall design.
+This is an upgrade to the existing working game.
+
+## 1. RANDOM GAME-OVER MESSAGES
+
+When the player collides with a couple and the game ends, display ONE randomly selected message from this list:
+
+1. “Ewwww, you’re now in a relationship.”
+2. “You lasted THAT long just to get caught?”
+3. “The streets are no longer safe.”
+4. “Awww. Love found you 🙄”
+5. “Damn. You got coupled.”
+6. “Ew. You have a partner now.”
+7. “Well… somebody’s dating now.”
+8. “You couldn’t stay single for ONE game?”
+9. “The relationship people have won.”
+10. “This is embarrassing.”
+11. “I’m disappointed in you.”
+12. “We had one job.”
+13. “You folded under relationship pressure.”
+14. “Love has defeated you. How unfortunate.”
+15. “Pack it up. You’re taken now.”
+16. “Someone tell the streets we lost another one.”
+
+The message should appear clearly on the existing game-over screen.
+
+Choose the message randomly each time the player loses so the same message does not always appear.
+
+Do not change the existing restart functionality.
+
+## 2. LIGHTWEIGHT SOUND EFFECTS
+
+Add a lightweight sound-effects system to the existing game.
+
+Add subtle sound effects for:
+
+- Game start
+- Player movement/tap interaction
+- Collision/game over
+- “PDA DETECTED 💋” event
+- “WEDDING SEASON 💍” event
+- New high score
+
+Use simple original game-style sounds generated through the browser Web Audio API rather than requiring copyrighted audio files or external assets.
+
+The sounds should be short, fun, and subtle so they do not become annoying during gameplay.
+
+Make sure sounds only begin after the user has interacted with the game, to comply with mobile browser autoplay restrictions.
+
+## 3. SOUND TOGGLE
+
+Add a small sound ON/OFF toggle that works on both mobile and desktop.
+
+Store the user's sound preference using localStorage so if they turn sound off, it remains off when they return to the game.
+
+The game should respect the saved preference.
+
+## 4. PRESERVE EVERYTHING ELSE
+
+Keep all existing functionality exactly as it currently works, including:
+
+- Tap-to-move controls
+- Keyboard controls
+- Player movement
+- Normal couples
+- PDA couples
+- Proposing couples
+- Random events
+- Progressive difficulty
+- Survival timer
+- Current score
+- High score
+- New high-score message
+- Restart flow
+- Existing visual design
+- Mobile responsiveness
+
+Do not add accounts, multiplayer, leaderboards, payments, Supabase, AI, power-ups, levels, bosses, skins, music, or any other new features.
+
+This should be a focused upgrade to the existing working Couple Apocalypse game, not a rebuild.

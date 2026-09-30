@@ -3,6 +3,14 @@ import { useCallback, useEffect, useRef, useState, type PointerEvent } from 'rea
 type GamePhase = 'intro' | 'playing' | 'over';
 type CoupleType = 'normal' | 'pda' | 'proposing';
 type GameEvent = 'pda' | 'wedding';
+type SoundEffect = 'start' | 'move' | 'collision' | 'pda' | 'wedding' | 'record';
+type SoundPattern = {
+  notes: number[];
+  noteDuration: number;
+  noteGap: number;
+  waveform: OscillatorType;
+  volume: number;
+};
 type Hazard = {
   id: number;
   lane: number;
@@ -18,6 +26,37 @@ type Hazard = {
 const COUPLE_EMOJIS = ['👩‍❤️‍👨', '💑', '👫', '🧑‍🤝‍🧑'];
 const LANE_POSITIONS = [10, 30, 50, 70, 90];
 const HIGH_SCORE_KEY = 'couple-apocalypse-best-score';
+const SOUND_PREFERENCE_KEY = 'couple-apocalypse-sound-enabled';
+const GAME_OVER_MESSAGES = [
+  'Ewwww, you’re now in a relationship.',
+  'You lasted THAT long just to get caught?',
+  'The streets are no longer safe.',
+  'Awww. Love found you. 🙄',
+  'Damn. You got coupled.',
+  'Ew. You have a partner now.',
+  'Well… somebody’s dating now.',
+  'You couldn’t stay single for ONE game?',
+  'The relationship people have won.',
+  'This is embarrassing.',
+  'I’m disappointed in you.',
+  'You had one job.',
+  'You folded under relationship pressure.',
+  'Love has defeated you. How unfortunate.',
+  'Pack it up. You’re taken now.',
+  'Someone tell the streets we lost another one.',
+  'Look at you. Somebody’s partner.',
+  'This could’ve been avoided.',
+  'I expected better from you.',
+  'Congratulations. You’re somebody’s problem now. 💀',
+];
+const SOUND_PATTERNS: Record<SoundEffect, SoundPattern> = {
+  start: { notes: [392, 523, 659], noteDuration: 0.09, noteGap: 0.015, waveform: 'sine', volume: 0.035 },
+  move: { notes: [587], noteDuration: 0.045, noteGap: 0, waveform: 'triangle', volume: 0.018 },
+  collision: { notes: [220, 165], noteDuration: 0.1, noteGap: 0.025, waveform: 'triangle', volume: 0.035 },
+  pda: { notes: [740, 988], noteDuration: 0.075, noteGap: 0.025, waveform: 'sine', volume: 0.022 },
+  wedding: { notes: [523, 659, 784], noteDuration: 0.085, noteGap: 0.02, waveform: 'sine', volume: 0.025 },
+  record: { notes: [659, 784, 988, 1175], noteDuration: 0.09, noteGap: 0.02, waveform: 'triangle', volume: 0.03 },
+};
 
 function readHighScore() {
   if (typeof window === 'undefined') return 0;
@@ -27,6 +66,16 @@ function readHighScore() {
     return Number.isFinite(score) && score > 0 ? score : 0;
   } catch {
     return 0;
+  }
+}
+
+function readSoundPreference() {
+  if (typeof window === 'undefined') return true;
+  try {
+    const saved = window.localStorage.getItem(SOUND_PREFERENCE_KEY);
+    return saved === null ? true : saved === 'true';
+  } catch {
+    return true;
   }
 }
 
@@ -66,11 +115,16 @@ function App() {
   const [activeEvent, setActiveEvent] = useState<GameEvent | null>(null);
   const [bestScore, setBestScore] = useState(readHighScore);
   const [newRecord, setNewRecord] = useState(false);
+  const [gameOverMessage, setGameOverMessage] = useState('');
+  const [soundEnabled, setSoundEnabled] = useState(readSoundPreference);
 
   const arenaRef = useRef<HTMLDivElement>(null);
   const phaseRef = useRef<GamePhase>('intro');
   const playerXRef = useRef(50);
   const targetXRef = useRef<number | null>(null);
+  const soundEnabledRef = useRef(soundEnabled);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const lastGameOverMessageIndexRef = useRef<number | null>(null);
   const hazardsRef = useRef<Hazard[]>([]);
   const bestScoreRef = useRef(bestScore);
   const directionRef = useRef<-1 | 0 | 1>(0);
@@ -88,6 +142,47 @@ function App() {
     if (direction !== 0) targetXRef.current = null;
   }, []);
 
+  const playSound = useCallback((effect: SoundEffect) => {
+    if (!soundEnabledRef.current || typeof window === 'undefined') return;
+
+    const AudioContextConstructor = window.AudioContext;
+    if (!AudioContextConstructor) return;
+
+    try {
+      let context = audioContextRef.current;
+      if (!context || context.state === 'closed') {
+        context = new AudioContextConstructor();
+        audioContextRef.current = context;
+      }
+
+      const pattern = SOUND_PATTERNS[effect];
+      void context.resume().then(() => {
+        if (!soundEnabledRef.current || context.state !== 'running') return;
+        const firstNoteAt = context.currentTime + 0.01;
+
+        pattern.notes.forEach((frequency, index) => {
+          const startAt = firstNoteAt + index * (pattern.noteDuration + pattern.noteGap);
+          const endAt = startAt + pattern.noteDuration;
+          const oscillator = context.createOscillator();
+          const gain = context.createGain();
+          oscillator.type = pattern.waveform;
+          oscillator.frequency.setValueAtTime(frequency, startAt);
+          gain.gain.setValueAtTime(0.0001, startAt);
+          gain.gain.exponentialRampToValueAtTime(pattern.volume, startAt + 0.01);
+          gain.gain.exponentialRampToValueAtTime(0.0001, endAt);
+          oscillator.connect(gain);
+          gain.connect(context.destination);
+          oscillator.start(startAt);
+          oscillator.stop(endAt + 0.01);
+        });
+      }).catch(() => {
+        // Audio is optional; keep gameplay working if the browser blocks it.
+      });
+    } catch {
+      // Audio is optional; keep gameplay working if Web Audio is unavailable.
+    }
+  }, []);
+
   const startRun = useCallback(() => {
     hazardsRef.current = [];
     setHazards([]);
@@ -100,6 +195,7 @@ function App() {
     activeEventRef.current = null;
     eventEndsRef.current = 0;
     setNewRecord(false);
+    setGameOverMessage('');
     directionRef.current = 0;
     priorLaneRef.current = -1;
     const now = performance.now();
@@ -109,7 +205,8 @@ function App() {
     lastPaintRef.current = now;
     phaseRef.current = 'playing';
     setPhase('playing');
-  }, []);
+    playSound('start');
+  }, [playSound]);
 
   useEffect(() => {
     if (phase !== 'playing') return undefined;
@@ -158,6 +255,7 @@ function App() {
         activeEventRef.current = event;
         eventEndsRef.current = now + 5_600;
         setActiveEvent(event);
+        playSound(event);
       }
 
       if (now >= nextSpawnRef.current) {
@@ -201,12 +299,19 @@ function App() {
       if (collided) {
         phaseRef.current = 'over';
         directionRef.current = 0;
+        playSound('collision');
         setImpact(true);
         setTimeout(() => setImpact(false), 420);
         setHazards(movedHazards);
         setElapsed(survived);
         activeEventRef.current = null;
         setActiveEvent(null);
+        const availableMessageIndexes = GAME_OVER_MESSAGES
+          .map((_, index) => index)
+          .filter((index) => index !== lastGameOverMessageIndexRef.current);
+        const messageIndex = availableMessageIndexes[Math.floor(Math.random() * availableMessageIndexes.length)];
+        lastGameOverMessageIndexRef.current = messageIndex;
+        setGameOverMessage(GAME_OVER_MESSAGES[messageIndex]);
         const beatBest = survived > bestScoreRef.current;
         setNewRecord(beatBest);
         if (beatBest) {
@@ -217,6 +322,7 @@ function App() {
           } catch {
             // Keep the run playable if browser storage is unavailable.
           }
+          window.setTimeout(() => playSound('record'), 220);
         }
         setPhase('over');
         return;
@@ -234,7 +340,7 @@ function App() {
 
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
-  }, [phase]);
+  }, [phase, playSound]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -242,6 +348,7 @@ function App() {
       if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
         event.preventDefault();
         setDirection(event.key === 'ArrowLeft' ? -1 : 1);
+        if (!event.repeat) playSound('move');
       }
     };
     const onKeyUp = (event: KeyboardEvent) => {
@@ -259,7 +366,7 @@ function App() {
       window.removeEventListener('keyup', onKeyUp);
       window.removeEventListener('blur', onBlur);
     };
-  }, [setDirection]);
+  }, [playSound, setDirection]);
 
   const moveToPointer = (event: PointerEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -267,6 +374,19 @@ function App() {
     const bounds = event.currentTarget.getBoundingClientRect();
     const percent = ((event.clientX - bounds.left) / bounds.width) * 100;
     targetXRef.current = Math.min(91, Math.max(9, percent));
+    playSound('move');
+  };
+
+  const toggleSound = () => {
+    const nextEnabled = !soundEnabledRef.current;
+    soundEnabledRef.current = nextEnabled;
+    setSoundEnabled(nextEnabled);
+    try {
+      window.localStorage.setItem(SOUND_PREFERENCE_KEY, String(nextEnabled));
+    } catch {
+      // Keep the toggle usable if browser storage is unavailable.
+    }
+    if (nextEnabled) playSound('move');
   };
 
   return (
@@ -274,7 +394,19 @@ function App() {
       <section className="game-shell" aria-label="Couple Apocalypse game">
         <div className="masthead">
           <span>FIELD REPORT // 01</span>
-          <span className="edition">SINGLE SURVIVAL SIM</span>
+          <div className="masthead-tools">
+            <span className="edition">SINGLE SURVIVAL SIM</span>
+            <button
+              className="sound-toggle"
+              type="button"
+              aria-label={soundEnabled ? 'Turn sound off' : 'Turn sound on'}
+              aria-pressed={soundEnabled}
+              onClick={toggleSound}
+            >
+              <span aria-hidden="true">{soundEnabled ? '♫' : '♪'}</span>
+              <span>SOUND {soundEnabled ? 'ON' : 'OFF'}</span>
+            </button>
+          </div>
         </div>
         <h1 className="game-title">COUPLE <span className="title-break">APOCALYPSE</span></h1>
 
@@ -374,7 +506,7 @@ function App() {
               <div className="end-card">
                 <p className="kicker">It was nice while it lasted</p>
                 <h2 className="game-over-title" id="game-over-heading">YOU GOT A PARTNER. 💀</h2>
-                <p className="game-over-subtitle">Your single era has ended.</p>
+                <p className="game-over-subtitle game-over-message" role="status">{gameOverMessage}</p>
                 {newRecord && <p className="new-record" role="status">NEW SINGLE RECORD 🏆</p>}
                 <div className="final-scores">
                   <div className="final-score">

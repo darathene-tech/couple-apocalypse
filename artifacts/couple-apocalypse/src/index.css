@@ -102,7 +102,38 @@ button:focus-visible { outline: 3px solid #8ae0dc; outline-offset: 4px; }
   letter-spacing: .12em;
   text-transform: uppercase;
 }
+.masthead-tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 .masthead .edition { color: #f08091; }
+.sound-toggle {
+  min-height: 22px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 7px;
+  border: 1px solid rgba(142, 219, 210, .3);
+  border-radius: 999px;
+  color: #8edbd2;
+  background: rgba(31, 33, 44, .82);
+  cursor: pointer;
+  font: 8px/1 var(--app-font-mono);
+  letter-spacing: .04em;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+}
+.sound-toggle[aria-pressed="false"] {
+  border-color: rgba(146, 147, 157, .3);
+  color: #92939d;
+}
+.sound-toggle span:first-child { font-size: 12px; }
+.game-over-message {
+  color: #ffc1cb;
+  font-weight: 700;
+  line-height: 1.35;
+}
 .game-title {
   margin: 0;
   font: 900 clamp(35px, 10vw, 52px)/.83 var(--app-font-display);
@@ -621,6 +652,7 @@ button:focus-visible { outline: 3px solid #8ae0dc; outline-offset: 4px; }
   .game-page { padding-inline: 11px; }
   .arena { min-height: 360px; height: 51dvh; }
   .intro-card, .end-card { padding-inline: 17px; }
+  .masthead .edition { display: none; }
   .scorebar { gap: 6px; padding-inline: 9px; }
   .score-label { gap: 4px; font-size: 8px; }
   .score-value { font-size: 20px; }
