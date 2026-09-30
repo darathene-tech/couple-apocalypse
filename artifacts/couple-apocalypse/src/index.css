@@ -577,49 +577,6 @@ button:focus-visible { outline: 3px solid #8ae0dc; outline-offset: 4px; }
   letter-spacing: .08em;
   animation: record-pop .42s cubic-bezier(.2,.8,.2,1) both;
 }
-.game-controls {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  padding: 0 2px;
-}
-.move-button {
-  position: relative;
-  min-height: 69px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  border: 1px solid rgba(227, 223, 215, .18);
-  border-radius: 16px;
-  color: #f1ebe3;
-  background: linear-gradient(155deg, #282b38, #20232e);
-  box-shadow: 0 5px 0 #14161e, inset 0 1px rgba(255,255,255,.06);
-  cursor: pointer;
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  transition: transform .12s ease, background .12s ease, border-color .12s ease;
-}
-.move-button:active, .move-button.is-held {
-  transform: translateY(3px);
-  border-color: rgba(142, 219, 210, .65);
-  background: #323c47;
-}
-.move-button:disabled { cursor: not-allowed; opacity: .62; }
-.move-arrow { color: #8edbd2; font-size: 22px; line-height: 1; }
-.move-label {
-  font: 800 14px var(--app-font-display);
-  letter-spacing: .12em;
-}
-.move-key {
-  position: absolute;
-  right: 12px;
-  top: 8px;
-  color: #777d89;
-  font: 8px var(--app-font-mono);
-}
 .footnote {
   display: flex;
   justify-content: center;
@@ -659,7 +616,6 @@ button:focus-visible { outline: 3px solid #8ae0dc; outline-offset: 4px; }
   .arena { height: 49vh; min-height: 330px; }
   .game-shell { gap: 8px; }
   .game-title { font-size: 40px; }
-  .move-button { min-height: 58px; }
 }
 @media (max-width: 360px) {
   .game-page { padding-inline: 11px; }
@@ -675,7 +631,6 @@ button:focus-visible { outline: 3px solid #8ae0dc; outline-offset: 4px; }
 @media (max-height: 700px) and (max-width: 699px) {
   .game-shell { gap: 8px; }
   .arena { height: clamp(300px, 46dvh, 360px); min-height: 300px; }
-  .move-button { min-height: 59px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }

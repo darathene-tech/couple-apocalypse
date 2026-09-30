@@ -62,7 +62,6 @@ function App() {
   const [hazards, setHazards] = useState<Hazard[]>([]);
   const [playerX, setPlayerX] = useState(50);
   const [elapsed, setElapsed] = useState(0);
-  const [heldDirection, setHeldDirection] = useState<-1 | 0 | 1>(0);
   const [impact, setImpact] = useState(false);
   const [activeEvent, setActiveEvent] = useState<GameEvent | null>(null);
   const [bestScore, setBestScore] = useState(readHighScore);
@@ -71,6 +70,7 @@ function App() {
   const arenaRef = useRef<HTMLDivElement>(null);
   const phaseRef = useRef<GamePhase>('intro');
   const playerXRef = useRef(50);
+  const targetXRef = useRef<number | null>(null);
   const hazardsRef = useRef<Hazard[]>([]);
   const bestScoreRef = useRef(bestScore);
   const directionRef = useRef<-1 | 0 | 1>(0);
@@ -85,13 +85,14 @@ function App() {
 
   const setDirection = useCallback((direction: -1 | 0 | 1) => {
     directionRef.current = direction;
-    setHeldDirection(direction);
+    if (direction !== 0) targetXRef.current = null;
   }, []);
 
   const startRun = useCallback(() => {
     hazardsRef.current = [];
     setHazards([]);
     playerXRef.current = 50;
+    targetXRef.current = null;
     setPlayerX(50);
     setElapsed(0);
     setImpact(false);
@@ -100,7 +101,6 @@ function App() {
     eventEndsRef.current = 0;
     setNewRecord(false);
     directionRef.current = 0;
-    setHeldDirection(0);
     priorLaneRef.current = -1;
     const now = performance.now();
     runStartedRef.current = now;
@@ -136,6 +136,14 @@ function App() {
           91,
           Math.max(9, playerXRef.current + directionRef.current * (distance / width) * 100),
         );
+      } else if (targetXRef.current !== null) {
+        const remaining = targetXRef.current - playerXRef.current;
+        if (Math.abs(remaining) < 0.15) {
+          playerXRef.current = targetXRef.current;
+          targetXRef.current = null;
+        } else {
+          playerXRef.current += remaining * (1 - Math.exp(-9 * dt));
+        }
       }
 
       const heat = Math.min(1, survived / 90);
@@ -193,7 +201,6 @@ function App() {
       if (collided) {
         phaseRef.current = 'over';
         directionRef.current = 0;
-        setHeldDirection(0);
         setImpact(true);
         setTimeout(() => setImpact(false), 420);
         setHazards(movedHazards);
@@ -254,14 +261,13 @@ function App() {
     };
   }, [setDirection]);
 
-  const beginHold = (direction: -1 | 1) => (event: PointerEvent<HTMLButtonElement>) => {
+  const moveToPointer = (event: PointerEvent<HTMLDivElement>) => {
     event.preventDefault();
     if (phaseRef.current !== 'playing') return;
-    event.currentTarget.setPointerCapture(event.pointerId);
-    setDirection(direction);
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const percent = ((event.clientX - bounds.left) / bounds.width) * 100;
+    targetXRef.current = Math.min(91, Math.max(9, percent));
   };
-
-  const endHold = () => setDirection(0);
 
   return (
     <main className="game-page">
@@ -306,6 +312,7 @@ function App() {
           ref={arenaRef}
           className={`arena${phase === 'playing' ? ' running' : ''}${impact ? ' shake' : ''}${activeEvent ? ' has-event' : ''}`}
           aria-label="Play field. Dodge the descending couples."
+          onPointerDown={moveToPointer}
         >
           <div className="city-glow" />
           {[20, 40, 60, 80].map((position) => (
@@ -357,7 +364,7 @@ function App() {
                 <button className="primary-button" onClick={startRun}>
                   STAY SINGLE <span aria-hidden="true">→</span>
                 </button>
-                <p className="controls-note"><strong>Move:</strong> hold ← → or use the big buttons below.<br />One collision. That’s all it takes.</p>
+                <p className="controls-note"><strong>Move:</strong> tap anywhere in the game area to move there. On desktop, use ← →.<br />One collision. That’s all it takes.</p>
               </div>
             </div>
           )}
@@ -387,38 +394,6 @@ function App() {
           )}
         </div>
 
-        <div className="game-controls" aria-label="Movement controls">
-          <button
-            className={`move-button${heldDirection === -1 ? ' is-held' : ''}`}
-            type="button"
-            disabled={phase !== 'playing'}
-            aria-label="Move left. Hold to keep moving."
-            onPointerDown={beginHold(-1)}
-            onPointerUp={endHold}
-            onPointerCancel={endHold}
-            onLostPointerCapture={endHold}
-            onContextMenu={(event) => event.preventDefault()}
-          >
-            <span className="move-key">← KEY</span>
-            <span className="move-arrow" aria-hidden="true">←</span>
-            <span className="move-label">LEFT</span>
-          </button>
-          <button
-            className={`move-button${heldDirection === 1 ? ' is-held' : ''}`}
-            type="button"
-            disabled={phase !== 'playing'}
-            aria-label="Move right. Hold to keep moving."
-            onPointerDown={beginHold(1)}
-            onPointerUp={endHold}
-            onPointerCancel={endHold}
-            onLostPointerCapture={endHold}
-            onContextMenu={(event) => event.preventDefault()}
-          >
-            <span className="move-key">→ KEY</span>
-            <span className="move-label">RIGHT</span>
-            <span className="move-arrow" aria-hidden="true">→</span>
-          </button>
-        </div>
         <div className="footnote">
           <span>ONE YOU</span><span className="divider">/</span><span>TOO MANY COUPLES</span><span className="divider">/</span><span>NO PRESSURE</span>
         </div>
