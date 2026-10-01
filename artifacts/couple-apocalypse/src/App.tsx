@@ -447,7 +447,7 @@ function App() {
     ?? GAME_THEMES[0].name;
 
   return (
-    <main className={`game-page theme-${selectedTheme}`}>
+    <main className={`game-page theme-${selectedTheme} game-phase-${phase}`}>
       <section className="game-shell" aria-label="Couple Apocalypse game">
         <div className="masthead">
           <span>FIELD REPORT // 01</span>
@@ -499,7 +499,7 @@ function App() {
 
         <div
           ref={arenaRef}
-          className={`arena${phase === 'playing' ? ' running' : ''}${impact ? ' shake' : ''}${activeEvent ? ' has-event' : ''}`}
+          className={`arena${phase === 'intro' ? ' arena--intro' : ''}${phase === 'playing' ? ' running' : ''}${impact ? ' shake' : ''}${activeEvent ? ' has-event' : ''}`}
           aria-label="Play field. Dodge the descending couples."
           onPointerDown={moveToPointer}
         >
@@ -547,12 +547,11 @@ function App() {
             <div className="overlay">
               <div className="intro-card">
                 <p className="kicker">A survival game for the romantically unbothered</p>
-                <h2 className="intro-title">COUPLE APOCALYPSE 💔</h2>
                 <p className="intro-subtitle">The world is full of couples. Stay single.</p>
                 <p className="warning-line"><span>♡</span> incoming hand-holders <span>♡</span></p>
                 <div className="customization-controls">
                   <div className="customization-character">
-                    <span className="customization-label" id="character-choice-label">CHARACTER</span>
+                    <span className="customization-label" id="character-choice-label">CHOOSE YOUR SURVIVOR</span>
                     <div className="character-options" role="group" aria-labelledby="character-choice-label">
                       {PLAYER_CHARACTERS.map((character) => (
                         <button
@@ -575,7 +574,7 @@ function App() {
                   </div>
                   <div className="customization-theme">
                     <div className="theme-choice-heading">
-                      <span className="customization-label" id="theme-choice-label">THEME</span>
+                      <span className="customization-label" id="theme-choice-label">CHOOSE YOUR VIBE</span>
                       <span className="selected-theme-name" aria-live="polite">{selectedThemeName}</span>
                     </div>
                     <div className="theme-options" role="group" aria-labelledby="theme-choice-label">

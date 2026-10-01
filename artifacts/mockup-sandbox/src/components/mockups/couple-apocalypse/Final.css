@@ -1,0 +1,306 @@
+/* Final mobile-first arcade polish. These overrides keep the existing game
+   intact while giving its title, choices, and playfield clearer priority. */
+.game-page {
+  align-items: center;
+  padding: max(24px, env(safe-area-inset-top)) 16px max(20px, env(safe-area-inset-bottom));
+}
+.game-shell { gap: 15px; }
+.masthead {
+  color: rgba(209, 205, 207, .68);
+  padding-inline: 4px;
+}
+.masthead > span:first-child,
+.masthead .edition { white-space: nowrap; }
+.masthead .edition { color: rgba(240, 128, 145, .72); }
+.sound-toggle {
+  min-height: 36px;
+  padding: 7px 10px;
+  border-color: rgba(142, 219, 210, .32);
+  color: rgba(176, 225, 218, .82);
+  background: rgba(31, 33, 44, .55);
+  font: 600 9px/1 var(--app-font-sans);
+  letter-spacing: .02em;
+}
+.sound-toggle span:first-child { font-size: 15px; }
+.game-title {
+  margin: 12px 0 2px;
+  font-size: clamp(39px, 10.4vw, 52px);
+  line-height: .88;
+  letter-spacing: -.035em;
+  text-shadow: 0 2px 0 var(--theme-accent-shadow), 0 8px 24px var(--theme-title-glow);
+}
+.game-title .title-break { display: inline; }
+.game-title::before {
+  content: '💔';
+  display: block;
+  margin-bottom: 9px;
+  color: var(--theme-accent);
+  font: 800 27px/1 var(--app-font-sans);
+  filter: drop-shadow(0 4px 12px var(--theme-title-glow));
+  transform: rotate(-7deg);
+}
+@media (max-width: 520px) {
+  .game-title .title-break { display: block; }
+}
+.game-phase-intro .scorebar { display: none; }
+.scorebar {
+  min-height: 54px;
+  padding-inline: 15px;
+  border-color: rgba(231, 226, 218, .09);
+  border-radius: 17px;
+  background: rgba(31, 33, 44, .72);
+  box-shadow: 0 7px 20px rgba(0, 0, 0, .14);
+}
+.score-label {
+  color: rgba(204, 198, 207, .76);
+  font-family: var(--app-font-sans);
+  font-size: 9px;
+  letter-spacing: .035em;
+}
+.score-value { font-size: 28px; }
+.best-score-label .score-value {
+  color: rgba(168, 220, 255, .88);
+  font-size: 23px;
+}
+.single-badge {
+  color: rgba(168, 220, 213, .8);
+  font-family: var(--app-font-sans);
+  font-size: 9px;
+  letter-spacing: .035em;
+}
+.single-badge::before {
+  width: 6px;
+  height: 6px;
+  box-shadow: none;
+}
+.threat-meter {
+  color: rgba(204, 198, 207, .66);
+  font-family: var(--app-font-sans);
+  font-size: 9px;
+  letter-spacing: .04em;
+}
+.arena {
+  border-color: rgba(235, 231, 225, .11);
+  border-radius: 25px;
+  box-shadow: 0 18px 46px rgba(0, 0, 0, .24), inset 0 0 50px rgba(7, 8, 13, .2);
+}
+.arena::before { opacity: .22; }
+.lane-line { opacity: .28; }
+.arena-hint { color: rgba(226, 220, 218, .22); }
+.arena--intro {
+  height: min(540px, 66dvh);
+  min-height: 440px;
+}
+.arena--intro .lane-line,
+.arena--intro .arena-hint { display: none; }
+.overlay {
+  padding: 12px;
+  background: rgba(15, 17, 25, .6);
+  backdrop-filter: blur(7px);
+}
+.intro-card,
+.end-card {
+  width: min(100%, 370px);
+  padding: 18px 18px 16px;
+  border-color: rgba(242, 229, 219, .14);
+  border-radius: 24px;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(240, 128, 145, .11), transparent 47%),
+    linear-gradient(155deg, rgba(48, 43, 57, .98), rgba(29, 30, 42, .985));
+  box-shadow: 0 20px 48px rgba(0, 0, 0, .34), inset 0 1px rgba(255, 255, 255, .055);
+}
+.kicker {
+  margin-bottom: 7px;
+  color: rgba(168, 220, 213, .82);
+  font: 500 10px/1.35 var(--app-font-sans);
+  letter-spacing: .07em;
+}
+.intro-card .intro-subtitle {
+  margin: 10px 0 13px;
+  color: rgba(235, 225, 226, .86);
+  font-size: 13px;
+  line-height: 1.45;
+}
+.intro-card .warning-line {
+  margin-bottom: 11px;
+  color: rgba(201, 192, 202, .72);
+  font: 500 10px/1.35 var(--app-font-sans);
+  letter-spacing: .025em;
+}
+.customization-controls {
+  gap: 10px;
+  margin-bottom: 13px;
+}
+.customization-character { gap: 6px; }
+.customization-label {
+  color: rgba(213, 204, 218, .8);
+  font: 700 9px/1.2 var(--app-font-sans);
+  letter-spacing: .1em;
+}
+.character-options { gap: 7px; }
+.character-choice {
+  min-height: 88px;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 3px 5px;
+  border-color: rgba(231, 226, 218, .13);
+  border-radius: 14px;
+  color: rgba(242, 231, 230, .88);
+  background: rgba(16, 18, 27, .38);
+  font: 600 9px/1.15 var(--app-font-sans);
+  white-space: nowrap;
+  transition: border-color .16s ease, background .16s ease, transform .16s ease;
+}
+.character-choice:hover { transform: translateY(-2px); }
+.character-choice.is-selected {
+  border-color: var(--theme-accent);
+  color: #fff0e6;
+  background: var(--theme-score-tint);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .05);
+}
+.avatar-swatch {
+  transform: scale(1.8);
+  transform-origin: center 52%;
+  margin: 8px 0 11px;
+}
+.avatar-swatch-head { box-shadow: 0 1px 3px rgba(0, 0, 0, .15); }
+.customization-theme { gap: 6px; }
+.theme-choice-heading { margin-bottom: 1px; }
+.selected-theme-name {
+  padding: 3px 8px;
+  border: 1px solid var(--theme-score-border);
+  border-radius: 999px;
+  color: var(--theme-accent);
+  background: var(--theme-score-tint);
+  font-size: 9px;
+}
+.theme-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 7px;
+  padding: 2px 0;
+}
+.theme-choice {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  min-height: 36px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 7px;
+  padding: 5px 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 12px;
+  color: #f5edf0;
+  text-align: left;
+  transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease, background .14s ease;
+}
+.theme-choice::after {
+  content: attr(title);
+  min-width: 0;
+  color: #f5edf0;
+  font: 600 9px/1.1 var(--app-font-sans);
+  white-space: normal;
+}
+.theme-choice::before {
+  content: '';
+  width: 15px;
+  height: 15px;
+  flex: 0 0 15px;
+  border: 1px solid rgba(255, 255, 255, .38);
+  border-radius: 50%;
+  background: var(--choice-swatch);
+  box-shadow: 0 0 10px var(--theme-title-glow);
+}
+.theme-choice--single-stable {
+  --choice-swatch: linear-gradient(145deg, #ffb5c0, #b54765);
+  background: rgba(207, 100, 123, .2);
+}
+.theme-choice--emotionally-unavailable {
+  --choice-swatch: linear-gradient(145deg, #d0b4fa, #5c417f);
+  background: rgba(133, 91, 185, .2);
+}
+.theme-choice--do-not-disturb {
+  --choice-swatch: linear-gradient(145deg, #b4e5ff, #365f88);
+  background: rgba(65, 118, 158, .22);
+}
+.theme-choice--love-avoidant {
+  --choice-swatch: linear-gradient(145deg, #ff8d98, #701d30);
+  background: rgba(139, 39, 56, .24);
+}
+.theme-choice--couple-repellent {
+  --choice-swatch: linear-gradient(145deg, #c7ef86, #456528);
+  background: rgba(79, 119, 43, .22);
+}
+.theme-choice:last-child { grid-column: 1 / -1; }
+.theme-choice:hover {
+  transform: translateY(-1px) scale(1.02);
+}
+.theme-choice.is-selected {
+  border-color: rgba(255, 246, 235, .78);
+  box-shadow: 0 0 0 2px var(--theme-accent), 0 4px 12px var(--theme-title-glow);
+}
+.primary-button {
+  min-height: 60px;
+  border-radius: 17px;
+  box-shadow: 0 5px 0 var(--theme-button-shadow), 0 10px 22px var(--theme-button-glow);
+  font-size: 20px;
+  letter-spacing: .055em;
+}
+.primary-button:hover {
+  box-shadow: 0 7px 0 var(--theme-button-shadow), 0 13px 25px var(--theme-button-glow);
+}
+.intro-card .controls-note {
+  margin-top: 11px;
+  color: rgba(189, 183, 195, .7);
+  font-size: 9px;
+  line-height: 1.45;
+}
+.controls-note strong { color: rgba(168, 220, 213, .86); }
+.hazard-caption {
+  border-color: rgba(255, 169, 185, .22);
+  border-radius: 999px;
+  color: rgba(247, 216, 221, .86);
+  font-family: var(--app-font-sans);
+  letter-spacing: .045em;
+}
+.player-label {
+  color: rgba(255, 193, 203, .82);
+  font-family: var(--app-font-sans);
+  font-size: 8px;
+  letter-spacing: .06em;
+}
+.footnote {
+  color: rgba(138, 140, 151, .58);
+  font-family: var(--app-font-sans);
+  font-size: 8px;
+  letter-spacing: .045em;
+}
+@media (max-width: 360px) {
+  .game-phase-intro .arena--intro {
+    height: min(520px, 67dvh);
+    min-height: 430px;
+  }
+  .game-phase-intro .character-choice {
+    min-height: 82px;
+    font-size: 8px;
+  }
+  .game-phase-intro .theme-choice {
+    min-height: 34px;
+    padding-inline: 6px;
+    border-radius: 12px;
+  }
+}
+@media (max-width: 430px) {
+  .masthead .edition { display: none; }
+}
+@media (max-height: 780px) {
+  .game-page {
+    align-items: flex-start;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
