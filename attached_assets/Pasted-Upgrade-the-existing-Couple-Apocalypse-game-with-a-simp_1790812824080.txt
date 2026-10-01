@@ -1,0 +1,109 @@
+Upgrade the existing Couple Apocalypse game with a simple character and theme customization system, plus the small label change below.
+
+IMPORTANT:
+This should be the LAST feature update before deployment.
+Do not rebuild the game.
+Do not change any existing game mechanics, difficulty, controls, scoring, events, layout, or overall gameplay.
+Preserve the current visual style and functionality.
+Do not add any features beyond what is explicitly requested below.
+
+## 1. CHANGE THE PLAYER LABEL
+
+Replace the current:
+
+“ME, THRIVING”
+
+with:
+
+“SINGLE SUBJECT”
+
+Keep it in the same position where “ME, THRIVING” currently appears.
+
+Do not create a duplicate “SINGLE SUBJECT” label if one already exists elsewhere in the interface.
+
+## 2. CHARACTER SELECTION
+
+Add a simple character selection option before the game starts.
+
+Provide 3 distinct player avatar options:
+
+- Feminine-presenting
+- Masculine-presenting
+- Gender-neutral
+
+Keep the characters visually consistent with the current Couple Apocalypse player character: cute, simple, slightly stylized, and matching the existing aesthetic.
+
+The selected character becomes the player's character during gameplay.
+
+Keep the selection interface simple and quick. Do not create a complex character creator.
+
+## 3. THEME SELECTION
+
+Add a simple theme selection option alongside character selection.
+
+Use these exact theme names and colour vibes:
+
+### Single & Stable
+Soft pink / blush / warm rose tones.
+This should feel closest to the current default Couple Apocalypse look.
+
+### Emotionally Unavailable
+Deep purple / plum / muted violet tones.
+Moody, slightly mysterious, but still playful.
+
+### Do Not Disturb
+Cool blue / navy / icy blue tones.
+Calm, detached, “leave me alone” energy.
+
+### Love Avoidant
+Red / burgundy / dark crimson tones.
+A slightly dramatic “red flag / stay away from me” feeling.
+
+### Couple Repellent
+Green / lime / dark green tones.
+Playful, chaotic, slightly toxic “keep couples away from me” energy.
+
+Each theme should have a clearly different colour identity while still feeling like the same game.
+
+Apply the theme consistently to the relevant player appearance, accents, UI highlights, buttons, and other compatible interface elements.
+
+Do not completely redesign the interface for each theme.
+
+Do not change the colours of the couple obstacles in a way that makes them difficult to distinguish from the player.
+
+## 4. SAVE PLAYER CHOICES
+
+Use localStorage to save the selected character and theme.
+
+When the player returns to the game, their previous selections should remain selected.
+
+If no choice has been saved yet, use the current/default player character and the “Single & Stable” theme.
+
+## 5. PRESERVE EVERYTHING ELSE
+
+Keep all existing functionality exactly as it currently works, including:
+
+- Tap-to-move controls
+- Keyboard controls
+- Player movement
+- Normal couples
+- PDA couples
+- Proposing couples
+- Random events
+- Progressive difficulty
+- Survival timer
+- Current score
+- High score
+- Random game-over messages
+- Sound effects
+- Sound ON/OFF toggle
+- Restart flow
+- Mobile responsiveness
+- Existing visual design
+
+Do not add accounts, multiplayer, leaderboards, payments, Supabase, AI, power-ups, levels, bosses, music, or any other unrelated features.
+
+Do not make any other changes.
+
+This is the final focused customization update to the existing working Couple Apocalypse game.
+After implementing this, leave all other functionality untouched.

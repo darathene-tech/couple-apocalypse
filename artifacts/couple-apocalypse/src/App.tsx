@@ -3,6 +3,8 @@ import { useCallback, useEffect, useRef, useState, type PointerEvent } from 'rea
 type GamePhase = 'intro' | 'playing' | 'over';
 type CoupleType = 'normal' | 'pda' | 'proposing';
 type GameEvent = 'pda' | 'wedding';
+type PlayerCharacter = 'feminine' | 'masculine' | 'neutral';
+type GameTheme = 'single-stable' | 'emotionally-unavailable' | 'do-not-disturb' | 'love-avoidant' | 'couple-repellent';
 type SoundEffect = 'start' | 'move' | 'collision' | 'pda' | 'wedding' | 'record';
 type SoundPattern = {
   notes: number[];
@@ -27,6 +29,20 @@ const COUPLE_EMOJIS = ['👩‍❤️‍👨', '💑', '👫', '🧑‍🤝‍�
 const LANE_POSITIONS = [10, 30, 50, 70, 90];
 const HIGH_SCORE_KEY = 'couple-apocalypse-best-score';
 const SOUND_PREFERENCE_KEY = 'couple-apocalypse-sound-enabled';
+const PLAYER_CHARACTER_KEY = 'couple-apocalypse-player-character';
+const GAME_THEME_KEY = 'couple-apocalypse-theme';
+const PLAYER_CHARACTERS = [
+  { id: 'feminine', label: 'Feminine', accessibleName: 'Feminine-presenting character' },
+  { id: 'masculine', label: 'Masculine', accessibleName: 'Masculine-presenting character' },
+  { id: 'neutral', label: 'Neutral', accessibleName: 'Gender-neutral character' },
+] as const satisfies readonly { id: PlayerCharacter; label: string; accessibleName: string }[];
+const GAME_THEMES = [
+  { id: 'single-stable', name: 'Single & Stable' },
+  { id: 'emotionally-unavailable', name: 'Emotionally Unavailable' },
+  { id: 'do-not-disturb', name: 'Do Not Disturb' },
+  { id: 'love-avoidant', name: 'Love Avoidant' },
+  { id: 'couple-repellent', name: 'Couple Repellent' },
+] as const satisfies readonly { id: GameTheme; name: string }[];
 const GAME_OVER_MESSAGES = [
   'Ewwww, you’re now in a relationship.',
   'You lasted THAT long just to get caught?',
@@ -57,6 +73,28 @@ const SOUND_PATTERNS: Record<SoundEffect, SoundPattern> = {
   wedding: { notes: [523, 659, 784], noteDuration: 0.085, noteGap: 0.02, waveform: 'sine', volume: 0.025 },
   record: { notes: [659, 784, 988, 1175], noteDuration: 0.09, noteGap: 0.02, waveform: 'triangle', volume: 0.03 },
 };
+
+function readSavedChoice<T extends string>(
+  key: string,
+  choices: readonly { id: T }[],
+  fallback: T,
+): T {
+  if (typeof window === 'undefined') return fallback;
+  try {
+    const saved = window.localStorage.getItem(key);
+    return saved !== null && choices.some((choice) => choice.id === saved) ? saved as T : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function saveChoice(key: string, value: string) {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch {
+    // Keep selections usable if browser storage is unavailable.
+  }
+}
 
 function readHighScore() {
   if (typeof window === 'undefined') return 0;
@@ -108,6 +146,12 @@ function getHazardX(hazard: Hazard, survived: number) {
 
 function App() {
   const [phase, setPhase] = useState<GamePhase>('intro');
+  const [selectedCharacter, setSelectedCharacter] = useState<PlayerCharacter>(
+    () => readSavedChoice(PLAYER_CHARACTER_KEY, PLAYER_CHARACTERS, 'masculine'),
+  );
+  const [selectedTheme, setSelectedTheme] = useState<GameTheme>(
+    () => readSavedChoice(GAME_THEME_KEY, GAME_THEMES, 'single-stable'),
+  );
   const [hazards, setHazards] = useState<Hazard[]>([]);
   const [playerX, setPlayerX] = useState(50);
   const [elapsed, setElapsed] = useState(0);
@@ -389,8 +433,21 @@ function App() {
     if (nextEnabled) playSound('move');
   };
 
+  const chooseCharacter = (character: PlayerCharacter) => {
+    setSelectedCharacter(character);
+    saveChoice(PLAYER_CHARACTER_KEY, character);
+  };
+
+  const chooseTheme = (theme: GameTheme) => {
+    setSelectedTheme(theme);
+    saveChoice(GAME_THEME_KEY, theme);
+  };
+
+  const selectedThemeName = GAME_THEMES.find((theme) => theme.id === selectedTheme)?.name
+    ?? GAME_THEMES[0].name;
+
   return (
-    <main className="game-page">
+    <main className={`game-page theme-${selectedTheme}`}>
       <section className="game-shell" aria-label="Couple Apocalypse game">
         <div className="masthead">
           <span>FIELD REPORT // 01</span>
@@ -477,11 +534,11 @@ function App() {
             </div>
           ))}
 
-          <div className="player" style={{ left: `${playerX}%` }} aria-label="Your single character">
+          <div className={`player player--${selectedCharacter}`} style={{ left: `${playerX}%` }} aria-label="Your single character">
             <div className="player-shadow" />
             <div className="player-head" />
             <div className="player-body" />
-            <span className="player-label">ME, THRIVING</span>
+            <span className="player-label">SINGLE SUBJECT</span>
           </div>
 
           {impact && <div className="screen-flash" aria-hidden="true" />}
@@ -493,6 +550,49 @@ function App() {
                 <h2 className="intro-title">COUPLE APOCALYPSE 💔</h2>
                 <p className="intro-subtitle">The world is full of couples. Stay single.</p>
                 <p className="warning-line"><span>♡</span> incoming hand-holders <span>♡</span></p>
+                <div className="customization-controls">
+                  <div className="customization-character">
+                    <span className="customization-label" id="character-choice-label">CHARACTER</span>
+                    <div className="character-options" role="group" aria-labelledby="character-choice-label">
+                      {PLAYER_CHARACTERS.map((character) => (
+                        <button
+                          className={`character-choice${selectedCharacter === character.id ? ' is-selected' : ''}`}
+                          key={character.id}
+                          type="button"
+                          aria-label={character.accessibleName}
+                          aria-pressed={selectedCharacter === character.id}
+                          onClick={() => chooseCharacter(character.id)}
+                        >
+                          <span className={`avatar-swatch avatar-swatch--${character.id}`} aria-hidden="true">
+                            <span className="avatar-swatch-hair" />
+                            <span className="avatar-swatch-head" />
+                            <span className="avatar-swatch-body" />
+                          </span>
+                          <span>{character.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="customization-theme">
+                    <div className="theme-choice-heading">
+                      <span className="customization-label" id="theme-choice-label">THEME</span>
+                      <span className="selected-theme-name" aria-live="polite">{selectedThemeName}</span>
+                    </div>
+                    <div className="theme-options" role="group" aria-labelledby="theme-choice-label">
+                      {GAME_THEMES.map((theme) => (
+                        <button
+                          className={`theme-choice theme-choice--${theme.id}${selectedTheme === theme.id ? ' is-selected' : ''}`}
+                          key={theme.id}
+                          type="button"
+                          aria-label={theme.name}
+                          aria-pressed={selectedTheme === theme.id}
+                          title={theme.name}
+                          onClick={() => chooseTheme(theme.id)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                </div>
                 <button className="primary-button" onClick={startRun}>
                   STAY SINGLE <span aria-hidden="true">→</span>
                 </button>
