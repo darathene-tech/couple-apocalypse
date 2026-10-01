@@ -1,0 +1,290 @@
+Make a FINAL visual/UI polish pass on the existing Couple Apocalypse game.
+
+IMPORTANT:
+This is NOT a feature update.
+Do NOT add new gameplay, mechanics, systems, screens, functionality, or content.
+
+The game already has everything it needs.
+
+The goal of this update is ONLY to make the existing game feel more like a fun, polished, shareable mobile game and less like a technical/developer dashboard.
+
+Do not rebuild the game.
+Do not remove existing functionality.
+Do not change the game mechanics.
+
+## 1. FIX THE TITLE SPACING AND HIERARCHY
+
+The “COUPLE APOCALYPSE” title currently sits too close to the top of the screen and feels cramped.
+
+Give the title significantly more breathing room above it.
+
+Create a clear visual hierarchy:
+
+FIELD REPORT // 01
+        ↓
+comfortable vertical spacing
+        ↓
+COUPLE APOCALYPSE 💔
+        ↓
+comfortable spacing
+        ↓
+subtitle / game introduction
+        ↓
+game content
+
+The title should feel like the main hero element of the screen, not something squeezed between the top navigation and the rest of the UI.
+
+Keep the chunky display font and existing visual identity, but give the title enough surrounding space that it feels intentional and balanced on mobile.
+
+Make sure the title does not feel crowded against the browser/top edge or the elements above it.
+
+## 2. MAKE THE GAME FEEL LIKE A GAME, NOT A DEVELOPER DASHBOARD
+
+The current visual language is too technical and structured.
+
+Keep the existing dark aesthetic, but make the experience feel more like:
+
+- A fun arcade game
+- Gen-Z internet humour
+- Slightly chaotic
+- Playful
+- Shareable
+- Visually expressive
+
+Rather than:
+
+- A developer dashboard
+- A sci-fi control panel
+- A technical simulation interface
+- A portfolio/demo project
+
+Do NOT completely throw away the current aesthetic.
+
+Keep:
+- Dark background
+- Pink/purple/blue accent colours
+- Chunky Couple Apocalypse title
+- Cute character style
+- Couple obstacles
+- Field-report concept
+- Existing typography where it works
+- Existing overall visual identity
+
+But soften the overly technical presentation.
+
+## 3. REDUCE VISUAL CLUTTER
+
+There are currently too many small technical labels, thin borders, status indicators and uppercase UI elements competing for attention.
+
+Simplify the visual hierarchy.
+
+Reduce the visual prominence of:
+- Tiny technical labels
+- Excessive uppercase text
+- Unnecessary technical-looking borders
+- Overly dense status information
+- Elements that make the interface feel like a dashboard
+
+Do not delete information that is required for gameplay.
+
+Instead, make secondary information visually quieter so the main game elements stand out.
+
+## 4. MAKE THE START SCREEN FEEL MORE PLAYFUL
+
+The start screen should immediately communicate:
+
+“This is a ridiculous game. Pick your character, pick your vibe, and survive.”
+
+Give the main game introduction more breathing room and personality.
+
+The visual hierarchy should feel closer to:
+
+💔
+
+COUPLE APOCALYPSE
+
+“The world is full of couples. Stay single.”
+
+CHOOSE YOUR SURVIVOR
+
+[character choices]
+
+CHOOSE YOUR VIBE
+
+[theme choices]
+
+STAY SINGLE →
+
+Do not literally force this exact layout if it conflicts with the existing responsive design, but use this as the visual hierarchy and feeling.
+
+The start screen should feel inviting and playful rather than like a settings/configuration screen.
+
+## 5. MAKE CHARACTER SELECTION MORE VISUAL
+
+The existing character choices feel too small and UI-like.
+
+Make the three existing character options more visually prominent.
+
+The player should be able to immediately see the difference between:
+
+- Feminine
+- Masculine
+- Neutral
+
+Make the character previews larger and more expressive while keeping the same cute, simple character style.
+
+Do not create a complex character creator.
+
+Do not add additional character types.
+
+This is only a visual improvement to the existing three choices.
+
+## 6. IMPROVE THE THEME SELECTION PRESENTATION
+
+Keep the existing five themes and their names exactly as they are:
+
+- Single & Stable
+- Emotionally Unavailable
+- Do Not Disturb
+- Love Avoidant
+- Couple Repellent
+
+Keep their existing colour directions:
+
+Single & Stable:
+soft pink / blush / warm rose
+
+Emotionally Unavailable:
+deep purple / plum / muted violet
+
+Do Not Disturb:
+cool blue / navy / icy blue
+
+Love Avoidant:
+red / burgundy / dark crimson
+
+Couple Repellent:
+green / lime / dark green
+
+Make the theme selection feel like choosing a fun game mode/vibe rather than selecting a technical setting.
+
+The colour options should be visually obvious and attractive.
+
+Do not redesign the entire UI around each theme.
+
+## 7. MAKE THE MAIN CTA FEEL LIKE A GAME BUTTON
+
+Keep the existing:
+
+“STAY SINGLE →”
+
+button.
+
+Make it feel more like a big, obvious arcade/game CTA.
+
+It should have:
+- Strong visual hierarchy
+- Enough surrounding space
+- Clear tap target on mobile
+- Slightly playful visual treatment
+- Good contrast
+
+Do not change the text.
+
+Do not add additional buttons.
+
+## 8. CREATE MORE VISUAL BREATHING ROOM
+
+This is important.
+
+Do not try to fit everything tightly into the available screen.
+
+Use spacing intentionally between:
+
+- Top metadata
+- Main title
+- Subtitle
+- Character selection
+- Theme selection
+- Main CTA
+
+The screen should feel balanced rather than compressed.
+
+Prioritize the main content and let secondary information breathe.
+
+Make sure the layout still fits comfortably on a typical phone screen without requiring awkward scrolling.
+
+## 9. KEEP THE GAMEPLAY SCREEN CLEAN
+
+Once gameplay starts, keep the existing gameplay mechanics and information.
+
+However, visually prioritize:
+
+1. Player
+2. Couples/obstacles
+3. Current survival time
+4. Best score
+5. Important event messages
+6. Secondary status information
+
+The game should feel immediately playable when the player enters it.
+
+Do not add additional HUD elements.
+
+## 10. DO NOT CHANGE FUNCTIONALITY
+
+Preserve EVERYTHING that already works:
+
+- Character selection
+- Theme selection
+- localStorage preferences
+- Tap-to-move
+- Keyboard controls
+- Normal couples
+- PDA couples
+- Proposing couples
+- Random events
+- Progressive difficulty
+- Survival timer
+- Current score
+- High score
+- Random game-over messages
+- Sound effects
+- Sound ON/OFF toggle
+- Restart
+- Mobile responsiveness
+
+Do not add:
+- New game modes
+- New characters
+- New themes
+- New obstacles
+- Power-ups
+- Levels
+- Multiplayer
+- Accounts
+- Leaderboards
+- Payments
+- Supabase
+- AI
+- Music
+- Any new feature
+
+## FINAL DESIGN GOAL
+
+The finished game should feel like:
+
+“a ridiculous, polished little mobile game that someone would actually want to play and send to their friends.”
+
+NOT:
+
+“a technically impressive coded project.”
+
+Keep the personality.
+Keep the humour.
+Keep the Couple Apocalypse identity.
+
+Just make the existing game feel more spacious, playful, colourful, polished and fun.
+
+This is a visual/UI polish pass only.
+Do not add anything else.
